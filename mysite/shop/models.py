@@ -28,7 +28,7 @@ class Product(models.Model):
 
 # Корзина привязана к пользователю
 class Cart(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name='Пользователь')
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name='Пользователь', primary_key=True)
     registration_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
     products = models.ManyToManyField('Product', through='CartItem', verbose_name='Товары')
 

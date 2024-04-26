@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 
-from shop.models import Cart
+
 
 
 class UserManager(BaseUserManager):
