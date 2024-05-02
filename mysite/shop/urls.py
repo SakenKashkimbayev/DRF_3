@@ -2,20 +2,14 @@ from django.contrib import admin
 from django.urls import path
 
 from shop import views
-from shop.views import ProductCreateView, CategoryListView, ProductView, ProductCRUDView, CategoryCRUDView
+from shop.views import CategoryListView, ProductCRUDView, CategoryCRUDView, ProductListView, OrderListView, \
+    OrderDetailView
 
 urlpatterns = [
-    path('', CategoryListView.as_view()),
-
-    path('all/', ProductCRUDView.as_view()),
-    path('all/<int:pk>/', ProductCRUDView.as_view()),
-
-    path('createP/', ProductCreateView.as_view()),
-    path('createC/', CategoryCRUDView.as_view()),
-    path('<int:pk>/', ProductView.as_view()),
-    # path('<int:pk>/update/', ProductUpdatelView.as_view()),
-    # path('<int:pk>/archive/', ProductDetailView.as_view()),
-
-    # path('', index),
-
+    path('product/', ProductListView.as_view()),
+    path('product/<int:pk>/', ProductCRUDView.as_view()),
+    path('order/', OrderListView.as_view()),
+    path('order/<int:pk>/', OrderDetailView.as_view()),
+    # для тестов
+    path('createC/', CategoryListView.as_view()),
 ]

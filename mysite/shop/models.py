@@ -27,21 +27,21 @@ class Product(models.Model):
         return self.name
 
 # Корзина привязана к пользователю
-class Cart(models.Model):
-    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name='Пользователь', primary_key=True)
-    registration_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
-    products = models.ManyToManyField('Product', through='CartItem', verbose_name='Товары')
-
-    def __str__(self):
-        return f"Корзина пользователя {self.user.username}"
-
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name='Корзина')
-    product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Товар')
-    quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
-
-    def __str__(self):
-        return f"{self.quantity} шт. {self.product.name} в корзине пользователя {self.cart.user.username}"
+# class Cart(models.Model):
+#     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, verbose_name='Пользователь', primary_key=True)
+#     registration_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
+#     products = models.ManyToManyField('Product', through='CartItem', verbose_name='Товары')
+#
+#     def __str__(self):
+#         return f"Корзина пользователя {self.user.username}"
+#
+# class CartItem(models.Model):
+#     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name='Корзина')
+#     product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Товар')
+#     quantity = models.PositiveIntegerField(default=1, verbose_name='Количество')
+#
+#     def __str__(self):
+#         return f"{self.quantity} шт. {self.product.name} в корзине пользователя {self.cart.user.username}"
 
 # Склад берет у продукта имя но в случае удаления продукта имя в складе остаеться
 class Warehouse(models.Model):
@@ -51,10 +51,17 @@ class Warehouse(models.Model):
 
 # Квитанция создается на каждую позицию в корзине отдельно
 class Order(models.Model):
+    IN_CART, BUY = 1, 2
+    STATUS_ORDER = (
+        (IN_CART, 'InCart'),
+        (BUY, 'Buy'),
+    )
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
     quantity = models.PositiveIntegerField(verbose_name='Количество')
-    registration_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
+    # registration_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
+    status_order = models.IntegerField(default=IN_CART, choices=STATUS_ORDER)
 
     def __str__(self):
         return f"Квитанция  {self.user.username}" \
